@@ -1,0 +1,22 @@
+# 虚拟环境
+.venv/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# PyInstaller 输出
+build/
+dist/
+*.spec
+
+# ffmpeg 缓存
+.ffmpeg/
+
+# 备份文件
+*_backup*.py
+
+# 系统文件
+.DS_Store
+Thumbs.db
