@@ -40,18 +40,15 @@ try:
             # 新增：先隐藏窗口
             self.root.withdraw()
 
-            # 先设置窗口大小
-            self.root.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}")
+            # 新增：窗口居中显示
             self.root.update_idletasks()
-
-            # 再计算并设置居中位置
             width = self.root.winfo_width()
             height = self.root.winfo_height()
             screen_width = self.root.winfo_screenwidth()
             screen_height = self.root.winfo_screenheight()
             x = (screen_width // 2) - (width // 2)
             y = (screen_height // 2) - (height // 2)
-            self.root.geometry(f"{width}x{height}+{x}+{y}")
+            self.root.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}+{x}+{y}")
             
             self.pptx_file = None
             self.output_dir = None
@@ -450,7 +447,8 @@ try:
                 return images_dir, total_slides
                 
             except Exception as e:
-                log_error(f"导出失败: {str(e)}\n{traceback.format_exc()}")
+                print(f"❌ 导出失败: {e}")
+                traceback.print_exc()
                 return None, 0
                 
             finally:
@@ -695,8 +693,7 @@ try:
                 videos_data = self.extract_videos_from_pptx(self.pptx_file, output_dir)
                 if video_mode == "compress" and videos_data:
                     for v in videos_data:
-                        video_name = v['name']
-                        self.root.after(0, lambda n=video_name: self.progress_var.set(f"正在压缩视频: {n}"))
+                        self.root.after(0, lambda n=v['name']: self.progress_var.set(f"正在压缩视频: {n}"))
                         self.compress_video(v['path'], "medium")
                     # 重新读取压缩后的文件
                     for v in videos_data:
@@ -1045,7 +1042,7 @@ try:
                 
                 <!-- 视频列表 -->
                 {% if videos %}
-                <div id="videoSection" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:400; justify-content:center; align-items:center; flex-direction:column;">
+                <div id="videoSection" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:400; display:none; justify-content:center; align-items:center; flex-direction:column;">
                     <div style="position:absolute; top:20px; right:20px; z-index:401;">
                         <button onclick="closeVideo()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:10px 20px; border-radius:25px; cursor:pointer; font-size:14px;">✕ 关闭视频</button>
                     </div>
